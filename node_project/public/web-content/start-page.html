@@ -1,0 +1,40 @@
+<style>
+	#container-start {
+		position: absolute;
+		height: 180px;
+		width: 100%;
+		top: 50%;
+		margin: 0px;
+		margin-top: -90px;
+		left: 0px;
+	}
+
+	#start-image {
+		width: 100%;
+		height: 170px;
+		background-color: rgb(248, 147, 29);
+		box-shadow: 0px 5px 10px rgba(100, 100, 100, 0.3);
+	}
+
+	#start-image img {
+		display: block;
+		margin: auto;
+		height: 150px;
+	}
+
+	#loading-image {
+		display: block;
+		position: absolute;
+		left: 50%;
+		width: 300px;
+		margin-top: -90px;
+		margin-left: -150px;
+	}
+</style>
+
+<div id="container-start" class="container-pages">
+	<div id="start-image">
+		<img src="img/img_kidzania-network.png" onclick="load_page('parental-page.html')" />
+	</div>
+	<img id="loading-image" src="img/img-loading.gif" />
+</div>

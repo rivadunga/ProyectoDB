@@ -1,0 +1,50 @@
+<style>
+	#container-parental-page{
+		font-size: 14px;
+		color: white;
+	}
+	
+	#parental-title{
+		font-family: kidzania;
+		font-size: 45px;
+	}
+	
+	#parental-content{
+		height: 150px;
+		overflow-y: scroll;
+		background-color: white;
+		color: rgb(90,90,90);	
+		padding: 10px;
+	}
+
+</style>
+
+
+<div id="container-parental-page" class="container-pages">
+	<span id="parental-title">Para papás</span><br/><br/>
+	<div id="parental-content">
+		Kidzania Network es una aplicación móvil en la que sus pequeños podrán vivir la experiencia de las redes sociales:
+		<blockquote>
+		- Característica 1<br/>
+		- Característica II<br/>
+		- Característica III<br/>
+		- Característica IV<br/>
+		- Característica V<br/>
+		- ...
+		</blockquote>	
+	</div><br/>
+	<input type="checkbox" id="chk-block-application"> Bloquear otras aplicaciones<br/>
+	<input type="checkbox" id="chk-terms"> Acepto <a href="#">Terminos y condiciones</a><br/><br/>
+	<input type="button" class="general-button" value="Iniciar" onclick="send_parental_terms()"> 
+	
+</div>
+
+<script>
+	function send_parental_terms(){
+		if ($("#chk-terms").is(':checked')){
+			load_page('request-name-page.html');			
+		}else{
+			alert("Es necesario aceptar los terminos y condiciones");
+		}		
+	}
+</script>

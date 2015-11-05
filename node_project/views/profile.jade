@@ -1,0 +1,56 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;')
+    link(rel='stylesheet', type='text/css', href='styles/style-main.css')
+    link(rel='stylesheet', type='text/css', href='styles/style-profile.css')
+    head
+  body
+    #header
+      img(src='img/img-header.png', alt='img_header')
+      label#profile-container
+        | Hola:
+        br 
+        #profile-name 
+    #container-content
+      #container-items
+    hidden#container-aux
+    #text-upload-backgroud.profile-background-black
+      #text-upload-container
+        input#text-upload-content(type='text', maxlength='100', placeholder='Comparte algo')
+        br
+        br
+        input.general-button(type='button', value='Enviar', onclick='upload_text()')
+        br
+        input.general-button-negative(type='button', value='Salir', onclick='show_hide_text_container()')
+    #map-view-backgroud.profile-background-black
+      #map-view-container
+        img(src='img/img-test-map.jpg')
+        input.general-button-negative(type='button', value='Salir', onclick='show_hide_map_container()')
+     
+    #challenge-view-backgroud.profile-background-black
+      #challenge-view-container
+        input.general-button-negative(type='button', value='Cerrar', onclick='show_hide_challenge_container()')
+     
+    #footer-options
+      #footer-options-text(onclick='show_hide_text_container()')
+        img(src='img/img-text.png')
+       
+      #footer-options-photo
+        img(src='img/img-photos.png')
+         
+        img#footer-options-photo-upload-loading(src='img/img-loading.gif')
+        
+        form#footer-options-photo-upload-form(method='post', enctype='multipart/form-data', action='log/logUploadImage.php')
+          input#footer-options-photo-upload(type='file', name='profile-photo')
+      
+      #footer-options-map(onclick='show_hide_map_container()')
+        img(src='img/img-map.png')
+  // <script src="http://code.jquery.com/jquery-1.9.1.js"></script>!
+  script(type='text/javascript', src='js/jquery.min.js')
+  script(type='text/javascript', src='js/jquery.form.js')
+  script(type='text/javascript', src='js/profile-controller.js')
+  script.
+    refresh_page_post();
+    setInterval(function(){refresh_page_post()},5000);
