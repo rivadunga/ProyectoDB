@@ -1,28 +1,29 @@
 var sqlAdm = require("./../../sql/SqlAdm.js")
 
 
-
-function getHtmlContent(r) {
-    var res = "<div class=\"item-container\">";
-    if (r.id_tip == 1)
-        res += "<div class = \"item-text\">" + r.des_mcont  + "</div>";
-	else
-    	res += "<img class =\"item-img\" src=\"img-upload/" + r.des_mcont  + "\" />";
-
-    res += "<div class=\"item-footer\"><hr><div class=\"item-smilie-container\" id=\"item-smilie-container-"+r.id_mcont+"\" onclick=\"add_smilie_post("+r.id_mcont+")\"><img src=\"img/img-smilies.png\" /></div><label class=\"item-smilie-user\">de: "+"Erick"+"</label><label class=\"item-smilie-number\" id=\"item-smilie-number-"+r.id_mcont+"\">"+r.smil_mcont+"</label></div></div>";
-    return res;
+var onFinish = function (result)
+{
+    console.log(result);
 }
 
+var loadPosts = function (res)
+{
+    var query =
+        "SELECT P.id_post, P.date, P.content, U.name, Pl.name, F.name " +
+        "   FROM Post P " +
+        "       JOIN User U ON P.id_user = U.id_user " +
+        "       JOIN Place Pl ON P.id_place = Pl.id_place " +
+        "       LEFT JOIN PostFile PF ON P.id_post = PF.id_post " +
+        "       LEFT JOIN File F ON PF.id_file = F.id_file ";
+    sqlAdm.getQuery(query, onFinish);
+    res.send("holi");
 
-var handleRequest = function(req, res, next) {
-    var onFinish = function(query) {
-        var result = "";
-        for (var i = 0; i < query.length; i++) {
-            result += getHtmlContent(query[i]);
-        }
-        res.send(result);
-    }
-    sqlAdm.getQuery("SELECT A.id_mcont,A.smil_mcont,A.des_mcont,A.id_tip,A.id_muser,(SELECT B.nam_muser limit 1) FROM mcontent A, muser B where A.id_muser = B.id_muser ORDER BY A.id_mcont DESC", onFinish);
+}
+
+var handleRequest = function (req, res, next)
+{
+    loadPosts(res);
 };
+
 
 exports.handleRequest = handleRequest;

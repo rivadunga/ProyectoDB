@@ -4,7 +4,7 @@ var getConnection = function() {
         host: '127.0.0.1',
         user: 'root',
         password: '',
-        database: 'kidzaniadb'
+        database: 'dbproyecto'
     });
     return connection;
 }
