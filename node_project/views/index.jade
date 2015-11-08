@@ -38,8 +38,8 @@ html
          
         img#footer-options-photo-upload-loading(src='img/img-loading.gif')
         
-        form#footer-options-photo-upload-form(method='post', enctype='multipart/form-data', action= requestUrl + '/saveImage')
-          input#footer-options-photo-upload(type='file', name='profile-photo')
+        form#footer-options-photo-upload-form(method='post', enctype='multipart/form-data', action= '/saveImage')
+          input#footer-options-photo-upload(type='file', name='image')
       
       #footer-options-map(onclick='show_hide_map_container()')
         img(src='img/img-map.png')

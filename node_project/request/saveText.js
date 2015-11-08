@@ -2,7 +2,7 @@ var sqlAdm = require("./../sql/SqlAdm.js")
 
 var handleRequest = function (req, res)
 {
-    console.log(req.content);
+    console.log(req.body.content);
     res.send("yolo");
 };
 
