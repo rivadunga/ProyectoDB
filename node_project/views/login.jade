@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;')
+    link(rel='stylesheet', type='text/css', href='styles/style-main.css')
+    link(rel='stylesheet', type='text/css', href='styles/style-profile.css')
+    head
+  body
+  | Login
+  
+  script(type='text/javascript', src='js/jquery.min.js')
+  script.
+    if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(function (position)
+    {
+    $.ajax(
+    {
+    type: "POST",
+    url: "/login",
+    data:
+    {
+    latitude: position.coords.latitude,
+    longitude: position.coords.longitude
+    },
+    success: function (data)
+    {
+    window.location = "../";
+    }
+    });
+    });
+    }
+  
+  
+    

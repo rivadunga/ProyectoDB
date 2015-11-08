@@ -1,13 +1,17 @@
-var sqlAdm = require("./../../sql/SqlAdm.js")
+var sqlAdm = require("./../sql/SqlAdm.js")
 
+var sendResult;
 
-var onFinish = function (result)
+var onFinish = function (res)
 {
-    console.log(result);
+    //console.log(res);
+    sendResult.send("holi");
 }
+
 
 var loadPosts = function (res)
 {
+    sendResult = res;
     var query =
         "SELECT P.id_post, P.date, P.content, U.name, Pl.name, F.name " +
         "   FROM Post P " +
@@ -16,11 +20,9 @@ var loadPosts = function (res)
         "       LEFT JOIN PostFile PF ON P.id_post = PF.id_post " +
         "       LEFT JOIN File F ON PF.id_file = F.id_file ";
     sqlAdm.getQuery(query, onFinish);
-    res.send("holi");
-
 }
 
-var handleRequest = function (req, res, next)
+var handleRequest = function (req, res)
 {
     loadPosts(res);
 };
