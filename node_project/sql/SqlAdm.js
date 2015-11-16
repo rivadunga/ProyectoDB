@@ -9,11 +9,12 @@ var getConnection = function() {
     return connection;
 }
 
-var getQuery = function(query,onFinish){
+var getQuery = function(query, onFinish) {
     var connection = getConnection();
     connection.connect();
 
     connection.query(query, function(err, rows, fields) {
+        if (err) console.log(err);
         onFinish(rows);
     });
     connection.end();

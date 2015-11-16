@@ -1,0 +1,36 @@
+
+- for (var i =  res.length -1; i >= 0; --i) {
+- var idPost = res[i].id_post;
+- var date = res[i].date;
+- var content = res[i].content;
+- var user = res[i]._user;
+- var idUser = res[i].id_user
+- var place = res[i]._place;
+- var file = res[i]._file;
+- var likes = res[i]._likes;
+
+div#content
+    input(type="hidden" class="idPost" value=idPost )
+    br
+    | #{date}
+    br
+    | #{content}
+    br
+    | #{user}
+    br
+    | #{place}
+    br
+    - if (file){
+    img(src="http://localhost:3000/user-content/" + file )    
+    br    
+    - }
+    
+    input(type="button" value=likes onClick="like(#{idPost})")
+    br
+    input(type="button" value="Seguir" onClick="follow(#{idUser})")
+    br
+
+- }
+    
+  
+    
