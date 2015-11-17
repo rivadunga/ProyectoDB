@@ -48,13 +48,15 @@ var removeFollow = function() {
 var handleRequest = function(req, res) {
     _result = res;
     _request = req;
-
     var sess = _request.session;
 
     _idFollow = req.body.idUser;
     _idUser = sess.userId;
-
-    follow();
+    if (_idFollow && _idUser){
+        follow();
+    }else{
+        _result.send("");
+    }
 };
 
 exports.handleRequest = handleRequest;

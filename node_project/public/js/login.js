@@ -1,7 +1,7 @@
 function login()
 {
-    var user = $("#user").val();
-    var pass = $("#pass").val();
+    var user = $("#email").val();
+    var pass = $("#password").val();
 
     if (navigator.geolocation)
     {
@@ -20,16 +20,18 @@ function login()
                 },
                 success: function (data)
                 {
-                    if (data == "LOGIN")
+                    if (data == "LOGIN"){
                         window.location = "../";
-                    if (data == "LOCK")
-                        alert(
-                            "Usuario o contraseña incorrecta"
-                        );
+                    }
+                    else{
+                        Materialize.toast("Usuario o contraseña incorrecta", 4000);
+                    }
 
                 }
             });
         });
+    }else{
+        Materialize.toast("No soporta localizacion", 4000);
     }
 
 }

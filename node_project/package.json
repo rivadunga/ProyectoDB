@@ -17,6 +17,7 @@
         "cors": "*",
         "express-session": "^1.7.6",
         "multer": "~0.1.6",
-        "sanitizer": "*"
+        "sanitizer": "*",
+        "pdfkit": "*"
     }
 }

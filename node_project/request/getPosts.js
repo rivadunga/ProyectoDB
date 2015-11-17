@@ -41,11 +41,13 @@ var onFinish = function(res) {
 var handleRequest = function(req, res) {
     _request = req;
     _result = res;
-
     var sess = _request.session;
     _idUser = sess.userId;
-
-    loadPosts();
+    if (_idUser){
+        loadPosts();
+    }else{
+        _result.send("");
+    }
 };
 
 

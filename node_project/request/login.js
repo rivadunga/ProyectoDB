@@ -71,7 +71,11 @@ var handleRequest = function(req, res) {
     _request = req;
     _user = sanitizer.sanitize(_request.body.user);
     _pass = sanitizer.sanitize(_request.body.pass);
-    login();
+    if (_user && _pass){
+        login();
+    }else{
+        _result.send("");
+    }
 };
 
 exports.handleRequest = handleRequest;

@@ -54,7 +54,11 @@ var handleRequest = function(req, res) {
     _idPost = req.body.idPost;
     _idUser = sess.userId;
 
-    like();
+    if (_idUser && _idPost){
+        like();
+    }else{
+        _result.send("");
+    }
 };
 
 exports.handleRequest = handleRequest;

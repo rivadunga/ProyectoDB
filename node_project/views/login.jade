@@ -1,18 +1,54 @@
 doctype html
-html
-  head
-    meta(charset='utf-8')
-    head
-  body
-    input#user(type='text', name='user' placeholder='Usuario')
-    br
-    input#pass(type='password', name='password' placeholder='Password')
-    br
-    input#send(type='button', name='send' value='Enviar' onClick='login()')
-
-  script(type='text/javascript', src='js/jquery.min.js')
-  script(type='text/javascript', src='js/login.js')
-
+head
+  meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+  meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge') 
+  meta(name='msapplication-tap-highlight', content='no')  
+  title Login
+  link(rel='icon', href='images/favicon/favicon-32x32.png', sizes='32x32')
+  link(rel='apple-touch-icon-precomposed', href='images/favicon/apple-touch-icon-152x152.png')
+  meta(name='msapplication-TileColor', content='#00bcd4')
+  meta(name='msapplication-TileImage', content='images/favicon/mstile-144x144.png')
+  link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')  
+  link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css', type='text/css', rel='stylesheet', media='screen,projection')
   
-  
-    
+body.white(style="background-color: #f09800 !important")
+// Start Page Loading
+#loader-wrapper
+  #loader
+  |       
+  .loader-section.section-left
+  |       
+  .loader-section.section-right
+// End Page Loading
+#login-page.row
+  .col.s4.z-depth-4.card-panel
+  |     
+  .col.s4.z-depth-4.card-panel(style='margin-top: 100px;')
+    form.login-form
+      .row
+        .input-field.col.s12.center
+          p.center.login-form-text
+            i.small.material-icons location_on
+            span(style="padding-left: 5px; padding-right: 8px; font-size: 23px; color: #F57C00")
+                | mySpot
+      |         
+      .row
+        .input-field.col.s12
+          input#email.validate(type='email')
+          |             
+          label(for='email') Email
+      |         
+      .row
+        .input-field.col.s12
+          input#password.validate(type='password')
+          |             
+          label(for='password') Password
+      |         
+      .row
+        .input-field.col.s12
+          a.btn.waves-effect.waves-light.col.s12(onClick="login()") Login
+|   
+script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js')
+script(type='text/javascript', src='js/login.js')

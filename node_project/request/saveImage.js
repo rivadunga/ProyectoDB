@@ -57,12 +57,16 @@ var onUploadImage = function() {
     var userId = sess.userId;
     var content = sanitizer.sanitize(_request.body.content);
 
-    saveText.savePlace(latitude, longitude, function(res) {
-        saveText.saveText("", userId, latitude, longitude,
-            function(res) {
-                saveImage();
-            });
-    });
+    if (latitude && longitude && userId && content) {
+        saveText.savePlace(latitude, longitude, function(res) {
+            saveText.saveText("", userId, latitude, longitude,
+                function(res) {
+                    saveImage();
+                });
+        });
+    } else {
+        _result.send("");
+    }
 }
 
 

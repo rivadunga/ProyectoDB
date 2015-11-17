@@ -34,7 +34,11 @@ var handleRequest = function(req, res) {
     var sess = _request.session;
     _idUser = sess.userId;
 
-    loadPosts();
+    if (_idUser){
+        loadPosts();
+    }else{
+        _result.send("");
+    }
 };
 
 

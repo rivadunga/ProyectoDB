@@ -10,35 +10,49 @@
 - var likes = res[i]._likes;
 - var iLike = res[i]._iLike;
 - var iFollow = res[i]._iFollow;
-- var valLikes = iLike > 0 ? likes + "*" : likes;
-- var valFollow = iFollow > 0 ? "no seguir" : "seguir";
 
 
-
-div(id='content'+ idPost)
-    input(type="hidden" class="idPost" value=idPost )
-    br
-    | #{date}
-    br
-    | #{content}
-    br
-    | #{user}
-    br
-    | #{place}
-    br
-    - if (file){
-    img(src="http://localhost:3000/user-content/" + file )    
-    br    
-    - }
-    
-    input(type="button" class="like" value=valLikes onClick="like(#{idPost})")
-    br
-    - if (idUs != idUser){
-    input(type="button" class="follow" value=valFollow onClick="follow(#{idUser})")
-    br
-    - }
+.row(style='float: center;' id="content"+idPost)
+    .col.s12.m6
+        .card.white.darken-4
+          .card-content.black-text
+            - if (idUser != idUs){
+            span.card-title #{user}
+            -}else{
+            span.card-title yo
+            -}    
+            - if (file){
+            .card-image
+              img(src="/user-content/" + file, alt='Mountain View')
+            -}else{
+              p(style='color: #303030; font-style="italic"')
+                | #{content}
+            -};
+          .card-action(style='padding-bottom: 50px')
+            a.center.col.s3(onClick='like(#{idPost})')
+              i.material-icons.left thumb_up
+              - if (iLike > 0){
+               span.like      
+                | #{likes}
+              - } else {
+              span.like(style='color: #a0a0a0 !important')
+                | #{likes}
+              - }
+            a.center.col.s3(href='sass.html')
+              i.material-icons.left location_on
+              | #{place}
+            - if (idUser != idUs){
+            a.center.col.s3(onClick='follow(#{idUser})')
+              i.material-icons.left supervisor_account
+              - if (iFollow > 0){
+              span.follow
+                | follow
+              - } else {
+              span.follow(style='color: #d0d0d0 !important')
+                | Unfollow              
+              - }
+             - }
 
 - }
-    
   
     

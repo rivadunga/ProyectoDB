@@ -56,9 +56,15 @@ var handleRequest = function(req, res) {
     var userId = sess.userId;
     var content = sanitizer.sanitize(req.body.content);
 
-    savePlace(latitude, longitude, function(res) {
-        saveText(content, userId, latitude, longitude, onSaveText);
-    });
+    if (latitude && longitude && userId && content) {
+        savePlace(latitude, longitude, function(res) {
+            saveText(content, userId, latitude, longitude,
+                onSaveText);
+        });
+    } else {
+        res.send("");
+    }
+
 };
 
 exports.savePlace = savePlace;
