@@ -4,14 +4,14 @@ var sqlAdm = require("./../sql/SqlAdm.js")
 var _result;
 var _request;
 
-var _idPost;
+var _idFollow;
 var _idUser;
 
-var like = function() {
+var follow = function() {
     var query =
-        "SELECT COUNT(id_like) AS _exists FROM Likes WHERE " +
-        "   id_post = #1 AND id_user = #2";
-    query = query.replace("#1", _idPost);
+        "SELECT COUNT(id_friends) AS _exists FROM Friends WHERE " +
+        "   id_user_a = #1 AND id_user_b = #2";
+    query = query.replace("#1", _idFollow);
     query = query.replace("#2", _idUser);
 
     sqlAdm.getQuery(query, onLikeVer);
@@ -19,25 +19,25 @@ var like = function() {
 
 var onLikeVer = function (res){
     if (res[0]._exists == 0)
-        addlike();
+        addFollow();
     else
-        removeLike();
+        removeFollow();
 }
 
-var addlike = function() {
+var addFollow = function() {
     var query =
-        "INSERT INTO Likes(id_post, id_user)  VALUE(#1,#2) ";
-    query = query.replace("#1", _idPost);
+        "INSERT INTO Friends(id_user_a, id_user_b)  VALUE(#1,#2) ";
+    query = query.replace("#1", _idFollow);
     query = query.replace("#2", _idUser);
     sqlAdm.getQuery(query, function() {
         _result.send("DONE");
     });
 }
 
-var removeLike = function() {
+var removeFollow = function() {
     var query =
-        "DELETE FROM Likes WHERE id_post = #1 AND id_user = #2 ";
-    query = query.replace("#1", _idPost);
+        "DELETE FROM Friends WHERE id_user_a = #1 AND id_user_b = #2 ";
+    query = query.replace("#1", _idFollow);
     query = query.replace("#2", _idUser);
     sqlAdm.getQuery(query, function() {
         _result.send("DONE");
@@ -51,10 +51,10 @@ var handleRequest = function(req, res) {
 
     var sess = _request.session;
 
-    _idPost = req.body.idPost;
+    _idFollow = req.body.idUser;
     _idUser = sess.userId;
 
-    like();
+    follow();
 };
 
 exports.handleRequest = handleRequest;

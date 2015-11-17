@@ -5,10 +5,9 @@ function like(idPost)
         url: "/like",
         data: {
             idPost: idPost,
-            like: true
         },
         success: function(data) {
-            alert(data);
+            refreshInfo();
         }
     });
 }
@@ -22,7 +21,7 @@ function follow(idUser)
             idUser: idUser
         },
         success: function(data) {
-            alert(data);
+            refreshInfo();
         }
     });
 }

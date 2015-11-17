@@ -20,7 +20,6 @@ function login()
                 },
                 success: function (data)
                 {
-                    alert(data);
                     if (data == "LOGIN")
                         window.location = "../";
                     if (data == "LOCK")

@@ -6,6 +6,9 @@ var saveText = require(".././request/saveText.js");
 var saveImage = require(".././request/saveImage.js");
 var login = require(".././request/login.js");
 var like = require(".././request/like.js");
+var follow = require(".././request/follow.js");
+var getPostsInfo = require(".././request/getPostsInfo.js");
+
 
 router.post('/getPosts', function(req, res) {
     getPost.handleRequest(req, res);
@@ -28,8 +31,13 @@ router.post('/like', function(req, res) {
 });
 
 router.post('/follow', function(req, res) {
-    res.send(req.body.idUser)
+    follow.handleRequest(req,res);
 });
+
+router.post('/getPostsInfo', function(req, res) {
+    getPostsInfo.handleRequest(req,res);
+});
+
 
 
 

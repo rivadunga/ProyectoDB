@@ -1,7 +1,8 @@
 $(document).ready(function() {
     refreshContent();
     setInterval(function() {
-        refreshContent()
+        refreshContent();
+        refreshInfo();
     }, 4000);
     uploadPhoto();
 });
@@ -53,4 +54,21 @@ function refreshContent() {
                 $('#mainContainer').prepend(data);
         }
     });
+}
+
+function refreshInfo() {
+
+    $.ajax({
+        type: "POST",
+        url: "/getPostsInfo",
+        success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#content' + data[i].id_post + " .like")
+                    .val(data[i]._likes);
+                $('#content' + data[i].id_post + " .follow")
+                    .val(data[i]._iFollow > 0 ? "no seguir" : "seguir");
+            }
+        }
+    });
+
 }

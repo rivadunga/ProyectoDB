@@ -1,5 +1,5 @@
 
-- for (var i =  res.length -1; i >= 0; --i) {
+- for (var i =  0; i < res.length; ++i) {
 - var idPost = res[i].id_post;
 - var date = res[i].date;
 - var content = res[i].content;
@@ -8,8 +8,14 @@
 - var place = res[i]._place;
 - var file = res[i]._file;
 - var likes = res[i]._likes;
+- var iLike = res[i]._iLike;
+- var iFollow = res[i]._iFollow;
+- var valLikes = iLike > 0 ? likes + "*" : likes;
+- var valFollow = iFollow > 0 ? "no seguir" : "seguir";
 
-div#content
+
+
+div(id='content'+ idPost)
     input(type="hidden" class="idPost" value=idPost )
     br
     | #{date}
@@ -25,10 +31,12 @@ div#content
     br    
     - }
     
-    input(type="button" value=likes onClick="like(#{idPost})")
+    input(type="button" class="like" value=valLikes onClick="like(#{idPost})")
     br
-    input(type="button" value="Seguir" onClick="follow(#{idUser})")
+    - if (idUs != idUser){
+    input(type="button" class="follow" value=valFollow onClick="follow(#{idUser})")
     br
+    - }
 
 - }
     
