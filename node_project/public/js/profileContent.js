@@ -2,7 +2,6 @@ $(document).ready(function() {
     refreshContent();
     setInterval(function() {
         refreshContent();
-        refreshInfo();
     }, 4000);
     uploadPhoto();
 });
@@ -56,19 +55,26 @@ function refreshContent() {
     });
 }
 
-function refreshInfo() {
 
+
+function getFriends()
+{
     $.ajax({
         type: "POST",
-        url: "/getPostsInfo",
+        url: "/getFriends",
         success: function(data) {
-            for (var i = 0; i < data.length; i++) {
-                $('#content' + data[i].id_post + " .like")
-                    .val(data[i]._likes);
-                $('#content' + data[i].id_post + " .follow")
-                    .val(data[i]._iFollow > 0 ? "no seguir" : "seguir");
-            }
+            $('#friendsContainer').html(data);
         }
     });
+}
 
+function getNotifications()
+{
+    $.ajax({
+        type: "POST",
+        url: "/getNotifications",
+        success: function(data) {
+            $('#notificationsContainer').html(data);
+        }
+    });
 }

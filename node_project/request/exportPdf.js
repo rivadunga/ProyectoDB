@@ -16,6 +16,51 @@ var printCell = function(x,y,w,h,text)
     _doc.text(text,{width: w, height: h, ellipsis: "...", align: 'justify'});
 }
 
+var printPlacesInfo = function()
+{
+    _doc.addPage();
+    _doc.end();
+}
+
+
+var printUserInfo = function()
+{
+    var query =
+        "SELECT U.name, " +
+        "  (SELECT COUNT(Fr_in.id_user_b) FROM Friends Fr_in WHERE Fr_in.id_user_a = U.id_user) AS _follower, " +
+        "   (SELECT COUNT(Fr_in.id_user_b) FROM Friends Fr_in WHERE Fr_in.id_user_b = U.id_user) AS _followed, " +
+        "   (SELECT COUNT(P_in.id_post) FROM Post P_in WHERE P_in.id_user = U.id_user) AS _numPost, " +
+        "   (SELECT DATE_FORMAT(MAX(P_in.date),'%m-%d-%Y') FROM Post P_in WHERE P_in.id_user = U.id_user) AS _lastPost " +
+        "FROM User U ";
+
+    _doc.addPage();
+    _doc.fontSize(20);
+    _doc.text('Usuarios: ', 100, 100)
+    _doc.fontSize(12);
+    printCell(100,140,120,20,"Nombre");
+    printCell(220,140,80,20, "Seguidores");
+    printCell(300,140,80,20, "Siguiendo");
+    printCell(380,140,80,20, "Numero de posts");
+    printCell(460,140,120,20,"Último post");
+
+    sqlAdm.getQuery(query, function(res){
+        _doc.fontSize(10);
+        for (var i = 0; i < res.length; i++)
+        {
+            if ((i+1) % 25 == 0) _doc.addPage();
+            printCell(100,150+18*((i+1)%25),80, 20,res[i].name);
+            printCell(240,150+18*((i+1)%25),200,20,res[i]._follower);
+            printCell(320,150+18*((i+1)%25),70, 20,res[i]._followed);
+            printCell(400,150+18*((i+1)%25),70, 20,res[i]._numPost);
+            printCell(460,150+18*((i+1)%25),80, 20,res[i]._lastPost);
+        }
+        printPlacesInfo();
+
+    });
+
+}
+
+
 var printPostInfo = function()
 {
     var query =
@@ -29,15 +74,17 @@ var printPostInfo = function()
         "   ORDER BY P.date";
 
     sqlAdm.getQuery(query, function(res){
+        _doc.fontSize(10);
         for (var i = 0; i < res.length; i++)
         {
-            printCell(100,150+18*(i+1),80, 20,res[i]._date);
-            printCell(180,150+18*(i+1),200,20,res[i].content);
-            printCell(380,150+18*(i+1),70, 20,res[i]._place);
-            printCell(450,150+18*(i+1),70, 20,res[i]._file);
-            printCell(520,150+18*(i+1),30, 20,res[i]._likes);
+            if ((i+1) % 25 == 0) _doc.addPage();
+            printCell(100,150+18*((i+1)%25),80, 20,res[i]._date);
+            printCell(180,150+18*((i+1)%25),200,20,res[i].content);
+            printCell(380,150+18*((i+1)%25),70, 20,res[i]._place);
+            printCell(450,150+18*((i+1)%25),70, 20,res[i]._file);
+            printCell(520,150+18*((i+1)%25),30, 20,res[i]._likes);
         }
-        _doc.end();
+        printUserInfo();
 
     });
 
@@ -61,13 +108,12 @@ var exportPdf = function()
     _doc.fontSize(20);
     _doc.text('Posts: ', 100, 100)
 
-    _doc.fontSize(10);
-
-    printCell(100,150,80,20,"Fecha");
-    printCell(180,150,200,20,"Contenido");
-    printCell(380,150,70,20,"Lugar");
-    printCell(450,150,70,20,"Archivos");
-    printCell(520,150,30,20,"Likes");
+    _doc.fontSize(12);
+    printCell(100,140,80,20,"Fecha");
+    printCell(180,140,200,20,"Contenido");
+    printCell(380,140,70,20,"Lugar");
+    printCell(450,140,70,20,"Archivos");
+    printCell(520,140,30,20,"Likes");
 
     printPostInfo();
 

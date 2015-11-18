@@ -1,0 +1,15 @@
+- for (var i =  0; i < res.length; ++i) {
+- if (res[i]._likes == 0) continue;
+- var likes = res[i]._likes;
+- var content = res[i].content;
+- var file = res[i]._file; 
+    br
+    | A #{likes} persona(s) les gusta tu publicación
+    - if (file){
+    img(src="/user-content/"+file)
+    -} else{
+    | #{content}
+    -}
+  
+- }
+    

@@ -9,9 +9,16 @@ html
       input#TP_text(type='text', name='' placeholder='Post')
       br
       input#TP_send(type='button', name='send' value='Enviar' onClick='uploadText()')
-      
+      br
       form#IP_form(method='post', enctype='multipart/form-data', action= '/saveImage')
         input#IP_image(type='file', name='image')
+      br
+      input#FR_get(type='button' value='getFriends' onClick='getFriends()')
+      br
+      input#NT_get(type='button' value='getNotifications' onClick='getNotifications()')
+      div#notificationsContainer
+      br
+      div#friendsContainer
       br
       div#mainContainer
       
