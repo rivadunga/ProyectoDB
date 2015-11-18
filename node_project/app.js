@@ -12,6 +12,10 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// BLUEMIX
+var cfenv = require('cfenv');
+var appEnv = cfenv.getAppEnv();
+
 app.use(logger('dev'));
 app.use(bodyParser());
 app.use(cookieParser());

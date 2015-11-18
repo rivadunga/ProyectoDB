@@ -12,7 +12,7 @@ var login = function() {
     var query =
         "SELECT " +
         "   (SELECT COUNT(id_user) FROM User WHERE name = '#1') AS _exists, " +
-        "   (SELECT COUNT(id_user) AS _login FROM USER WHERE name = '#2' " +
+        "   (SELECT COUNT(id_user) AS _login FROM User WHERE name = '#2' " +
         "       AND password = '#3') AS _login";
 
     query = query.replace("#1", _user);

@@ -1,0 +1,3 @@
+cf api https://api.ng.bluemix.net
+cf login -u a01018087@itesm.mx -o a01018087_org -s dev
+cf push erick-myspot
