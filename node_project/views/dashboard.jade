@@ -1,3 +1,15 @@
+-var A1 = res[0].A1;
+-var A2 = res[0].A2;
+-var A3 = res[0].A3;
+-var B1 = res[0].B1;
+-var B2 = res[0].B2;
+-var B3 = res[0].B3;
+-var C1 = res[0].C1;
+-var C2 = res[0].C2;
+-var D1 = res[0].D1;
+-var D2 = res[0].D2;
+
+
 doctype html(lang='en')
 head
 	meta(charset='utf-8')
@@ -35,41 +47,41 @@ body(style="background-color: #eee !important")
 					.card-content.white-text
 						span.card-title Img más likeada
 						.card-image
-							img(src="http://media1.santabanta.com/full1/Global%20Celebrities%28F%29/Kate%20Upton/kate-upton-76a.jpg")
+							img(src="/user-content/"+B2)
 					.card-action
 						a	 
-							| Mike						
+							| #{B3}						
 
 		.row		
 			.col.s4.m4.l0
 				.card.blue-grey.darken-1
 					.card-content.white-text
 						span.card-title Post más gustado 
-						.card-content
-							| I am a very simple card. I am good at containing small bits of information.
+						i.card-content.small
+							| #{A2}
 					.card-action
 						a	 
-							| Erick
+							| #{A3}
 
 			.col.s4.m4.l0
 				.card.blue-grey.darken-1
 					.card-content.white-text
 						span.card-title Usuario más popular 
 						i.card-content.medium
-							| Erick
+							| #{D2}
 					.card-action
 						a	 
-							| 40 followers
+							| #{D1} followers
 
 			.col.s4.m4.l0
 				.card.blue-grey.darken-1
 					.card-content.white-text
 						span.card-title Usuario más likeado 
 						i.card-content.medium
-							| Erick
+							| #{C2}
 					.card-action
 						a	 
-							| 40 likes
+							| #{C1} likes
 
 
 

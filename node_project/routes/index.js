@@ -15,7 +15,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-    res.render('login');
+    sess = req.session;
+    if (sess.userId && sess.userName){
+        res.redirect('/');
+    }else{
+        res.render('login');
+    }
+
+
 });
 
 router.get('/logout', function(req, res, next) {
@@ -26,27 +33,16 @@ router.get('/logout', function(req, res, next) {
 
 
 router.get('/dashboard', function(req, res, next) {
-    sess = req.session;
-    //if (sess.userId && sess.userName == "erick")
-        dashboard.handleRequest(req,res);
-    //else
-    //    res.redirect('/login');
+    dashboard.handleRequest(req,res);
 });
 
 router.get('/report', function(req, res, next) {
-    sess = req.session;
-    if (sess.userId && sess.userName == "erick")
-        exportPdf.handleRequest(req,res);
-    else
-        res.redirect('/login');
+    exportPdf.handleRequest(req,res);
 });
 
 router.get('/csv', function(req, res, next) {
     sess = req.session;
-    //if (sess.userId && sess.userName == "erick")
-        exportCsv.handleRequest(req,res);
-    //else
-    //    res.redirect('/login');
+    exportCsv.handleRequest(req,res);
 });
 
 module.exports = router;

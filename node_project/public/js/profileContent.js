@@ -5,14 +5,15 @@ $(document).ready(function() {
         refreshContent();
     }, 4000);
     uploadPhoto();
+    $('#loading').fadeOut();
 });
 
 function uploadPhoto() {
-
+    $('#loading').fadeIn();
     $('#IP_form').live('change', function() {
         $("#IP_form").ajaxForm({
             success: function(data, textStatus, jqXHR) {
-                refreshContent();
+                $('#loading').fadeOut();
             }
         }).submit();
     });
@@ -25,6 +26,7 @@ function uploadText() {
 }
 
 function sendText(content) {
+    $('#loading').fadeIn();
     $.ajax({
         type: "POST",
         url: "/saveText",
@@ -32,7 +34,7 @@ function sendText(content) {
             content: content
         },
         success: function(data) {
-            refreshContent();
+            $('#loading').fadeOut();
         }
     });
 }
@@ -77,6 +79,18 @@ function getNotifications()
         url: "/getNotifications",
         success: function(data) {
             $('#notificationsContainer').html(data);
+        }
+    });
+}
+
+
+function getMap()
+{
+    $.ajax({
+        type: "POST",
+        url: "/getMap",
+        success: function(data) {
+            $('#mapContainer').html(data);
         }
     });
 }

@@ -1,10 +1,14 @@
 var getConnection = function() {
     var mysql = require('mysql');
     var connection = mysql.createConnection({
-        host: '23.229.201.8',
+        /*host: '23.229.201.8',
         user: 'myspot-nd',
         password: 'holaatodos',
-        database: 'myspot-db'
+        database: 'myspot-db'*/
+        host: '127.0.0.1',
+        user: 'root',
+        password: '',
+        database: 'dbproyecto'
     });
     return connection;
 }

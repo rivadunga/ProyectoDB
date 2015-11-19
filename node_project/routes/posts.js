@@ -10,6 +10,7 @@ var follow = require(".././request/follow.js");
 var getPostsInfo = require(".././request/getPostsInfo.js");
 var getFriends = require(".././request/getFriends.js");
 var getNotification = require(".././request/getNotification.js");
+var getMap = require(".././request/getMap.js");
 
 router.post('/getPosts', function(req, res) {
     getPost.handleRequest(req, res);
@@ -47,6 +48,10 @@ router.post('/getFriends', function(req, res) {
 
 router.post('/getNotifications', function(req, res) {
     getNotification.handleRequest(req,res);
+});
+
+router.post('/getMap', function(req, res) {
+    getMap.handleRequest(req,res);
 });
 
 
