@@ -13,8 +13,8 @@ var getNotification = function() {
         "   FROM Post P " +
         "       JOIN User U  ON P.id_user  = U.id_user " +
         "       LEFT JOIN PostFile PF ON P.id_post = PF.id_post " +
-        "       LEFT JOIN File F ON F.id_file = PF.id_file "
-        "   WHERE U.user_id = #1";
+        "       LEFT JOIN File F ON F.id_file = PF.id_file " +
+        "   WHERE U.id_user = #1";
 
     query = query.replace("#1", _idUser);
     sqlAdm.getQuery(query, onFinish);

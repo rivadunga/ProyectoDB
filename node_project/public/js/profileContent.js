@@ -1,5 +1,6 @@
 $(document).ready(function() {
     refreshContent();
+      $('.modal-trigger').leanModal();
     setInterval(function() {
         refreshContent();
     }, 4000);
@@ -7,6 +8,7 @@ $(document).ready(function() {
 });
 
 function uploadPhoto() {
+
     $('#IP_form').live('change', function() {
         $("#IP_form").ajaxForm({
             success: function(data, textStatus, jqXHR) {
@@ -75,6 +77,23 @@ function getNotifications()
         url: "/getNotifications",
         success: function(data) {
             $('#notificationsContainer').html(data);
+        }
+    });
+}
+
+
+function refreshInfo() {
+
+    $.ajax({
+        type: "POST",
+        url: "/getPostsInfo",
+        success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#content' + data[i].id_post + " .like")
+                    .html(data[i]._likes);
+                $('#content' + data[i].id_post + " .follow")
+                    .html(data[i]._iFollow > 0 ? "UNFOLLOW" : "FOLLOW");
+            }
         }
     });
 }

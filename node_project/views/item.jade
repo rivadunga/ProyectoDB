@@ -12,47 +12,58 @@
 - var iFollow = res[i]._iFollow;
 
 
-.row(style='float: center;' id="content"+idPost)
-    .col.s12.m6
-        .card.white.darken-4
-          .card-content.black-text
-            - if (idUser != idUs){
-            span.card-title #{user}
-            -}else{
-            span.card-title yo
-            -}    
-            - if (file){
-            .card-image
-              img(src="/user-content/" + file, alt='Mountain View')
-            -}else{
-              p(style='color: #808080 !important; font-style: italic; font-size:large !important')
-                | #{content}
-            -};
-          .card-action(style='padding-bottom: 50px')
-            a.center.col.s3(onClick='like(#{idPost})')
-              i.material-icons.left thumb_up
-              - if (iLike > 0){
-               span.like      
-                | #{likes}
-              - } else {
-              span.like(style='color: #a0a0a0 !important')
-                | #{likes}
-              - }
-            a.center.col.s3(href='sass.html')
-              i.material-icons.left location_on
-              | #{place}
-            - if (idUser != idUs){
-            a.center.col.s3(onClick='follow(#{idUser})')
-              i.material-icons.left supervisor_account
-              - if (iFollow > 0){
-              span.follow
-                | follow
-              - } else {
-              span.follow(style='color: #d0d0d0 !important')
-                | unfollow           
-              - }
-             - }
+style.
+	@media(max-width:400px){
+		.item{
+			width: 80%;
+		}
+	}
+	@media(min-width:400px){
+		.item{
+			width: 60%;
+		}
+	}
+
+.item(id="content"+idPost style="margin: auto !important;")
+	input.idPost(type="hidden" value=idPost)
+	.card.white.darken-4
+		.card-content.black-text
+			- if (idUser != idUs){
+			span.card-title #{user}
+			-}else{
+			span.card-title yo
+			-}    
+			- if (file){
+			.card-image
+				img(src="/user-content/" + file, alt='Mountain View')
+			-}else{
+				p(style='color: #808080 !important; font-style: italic; font-size:x-large !important')
+					| #{content}
+			-};
+		.card-action
+			a.col
+				- if (iLike > 0){
+				.right.like(style="padding-left: 10px")      
+					| #{likes}
+				- } else {
+				b.right.like(style="padding-left: 10px")    
+					| #{likes}
+				- }
+			a.center.col(onClick='like(#{idPost})')
+				i.material-icons.right thumb_up
+
+			a.left.col(href='sass.html')
+				i.material-icons.left location_on
+				| #{place}
+			- if (idUser != idUs){
+			a.center.col.s3(onClick='follow(#{idUser})')
+				- if (iFollow == 0){
+				span.right.follow(style="padding-right: 10px")    
+					| Follow
+				- } else {
+				span.right.follow(style="padding-right: 10px; color: #b0b0b0")    
+					| Unfollow           
+				- }
+				- }
 
 - }
-  
-    

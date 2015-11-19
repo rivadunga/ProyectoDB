@@ -1,16 +1,28 @@
+- var order = 0;
 - for (var i =  0; i < res.length; ++i) {
 - if (!(res[i].id_user_a && res[i].id_user_b)) continue;
+
 - if (res[i].id_user_a == idUs){
 -   var name = res[i]._nameB;
 -   var follow = res[i]._followersB
+- if (order == 0 || order %2 == 0){
+h4 Seguidores      
+- order = 1;
+-}
+- order += 2;
 -}else{
 -    var name = res[i]._nameA;
 -    var follow = res[i]._followersA;
+- if (order == 0 || order %2 == 1){
+h4 Siguiendo   
+- order = 2; 
+-}
+- order += 2;
 - } 
-    br
-    | #{name}
-    br
-    | #{follow}
-  
+ul.collection  
+	li.collection-item.avatar
+		i.material-icons.circle.blue person_pin        
+		span.title #{name}
+		p
+			| Seguidores: #{follow}    
 - }
-    

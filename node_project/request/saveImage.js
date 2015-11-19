@@ -11,6 +11,17 @@ var _fileName;
 var _encode;
 
 
+var savePostImage = function()
+{
+    var query2 = "INSERT INTO PostFile(id_post, id_file) VALUES(" +
+        "(SELECT MAX(id_post) FROM Post)," +
+        "(SELECT id_file FROM File WHERE name = '#1'))";
+
+    query2 = query2.replace("#1", _fileName);
+    sqlAdm.getQuery(query2, onSaveImage);
+
+}
+
 var saveImage = function() {
 
     var query1 =
@@ -21,14 +32,9 @@ var saveImage = function() {
     query1 = query1.replace("#2", _encode);
     query1 = query1.replace("#3", _fileName);
 
-    var query2 = "INSERT INTO PostFile(id_post, id_file) VALUES(" +
-        "(SELECT MAX(id_post) FROM Post)," +
-        "(SELECT id_file FROM File WHERE name = '#1'))";
-
-    query2 = query2.replace("#1", _fileName);
-
-    sqlAdm.getQuery(query1, function(res) {});
-    sqlAdm.getQuery(query2, onSaveImage);
+    sqlAdm.getQuery(query1, function(res) {
+        savePostImage();
+    });
 }
 
 var onSaveImage = function(res) {
