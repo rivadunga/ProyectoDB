@@ -18,6 +18,7 @@
         "multer": "~0.1.6",
         "sanitizer": "*",
         "pdfkit": "*",
-		"cfenv": "1.0.x"
+		"cfenv": "1.0.x",
+        "neo4j": "2.0.0-RC2"
     }
 }

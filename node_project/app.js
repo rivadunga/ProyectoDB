@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var posts = require('./routes/posts');
 var session = require('express-session');
+var neo4j = require('neo4j');
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));

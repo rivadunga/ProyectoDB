@@ -3,6 +3,7 @@ var router = express.Router();
 var exportPdf = require(".././request/exportPdf.js");
 var exportCsv = require(".././request/exportCsv.js");
 var dashboard = require(".././request/getDashboard.js");
+var neo4jT = require(".././request/neo4jT.js");
 var sess;
 
 router.get('/', function(req, res, next) {
@@ -21,8 +22,10 @@ router.get('/login', function(req, res, next) {
     }else{
         res.render('login');
     }
+});
 
-
+router.get('/neo4j', function(req, res, next) {
+    neo4jT.handleRequest(req,res);
 });
 
 router.get('/logout', function(req, res, next) {
