@@ -1,4 +1,4 @@
-var sqlAdm = require("./../sql/SqlAdm.js")
+var neo4j = require("./../neo4j/Neo4JAdm.js");
 
 var _result;
 var _request;
@@ -8,16 +8,17 @@ var _idUser;
 var getNotification = function() {
 
     var query =
-        "SELECT P.id_post, P.content, F.name as _file, " +
-        "(SELECT COUNT(L.id_like) FROM Likes L WHERE L.id_post = P.id_post) AS _likes " +
-        "   FROM Post P " +
-        "       JOIN User U  ON P.id_user  = U.id_user " +
-        "       LEFT JOIN PostFile PF ON P.id_post = PF.id_post " +
-        "       LEFT JOIN File F ON F.id_file = PF.id_file " +
-        "   WHERE U.id_user = #1";
+        "MATCH (p)-[:ES_DE]->(u:User),(p)-[:ESTA_EN]->(pl:Place) " +
+        "WHERE u.id_user = '#1' " +
+        "OPTIONAL MATCH (u2:User)-[l:LIKE]->(p:Post),(f:File) " +
+        "return p.id_post as id_post, p.date as date,p.content as content, u.id_user as user, u.id_user as id_user, " +
+        "COUNT(DISTINCT l) as _likes, " +
+        "collect(distinct pl.name) as _place " +
+        "ORDER BY p.id_post DESC";
+
 
     query = query.replace("#1", _idUser);
-    sqlAdm.getQuery(query, onFinish);
+    neo4j.getQuery(query, onFinish);
 }
 
 var onFinish = function(res) {

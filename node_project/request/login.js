@@ -1,4 +1,4 @@
-var sqlAdm = require("./../sql/SqlAdm.js")
+var neo4j = require("./../neo4j/Neo4JAdm.js");
 var sanitizer = require('sanitizer');
 
 var _result;
@@ -9,59 +9,34 @@ var _pass;
 
 
 var login = function() {
+
     var query =
-        "SELECT " +
-        "   (SELECT COUNT(id_user) FROM User WHERE name = '#1') AS _exists, " +
-        "   (SELECT COUNT(id_user) AS _login FROM User WHERE name = '#2' " +
-        "       AND password = '#3') AS _login";
+        "MATCH (u:User) " +
+        "WITH u.id_user as _idUser, u " +
+        "WHERE u.id_user = '#1' AND u.password = '#2' " +
+        "RETURN _idUser";
 
     query = query.replace("#1", _user);
-    query = query.replace("#2", _user);
-    query = query.replace("#3", _pass);
-    sqlAdm.getQuery(query, onLogin);
+    query = query.replace("#2", _pass);
+    neo4j.getQuery(query, onLogin);
 }
 
 var onLogin = function(res) {
-
-    var exist = res[0]._exists > 0 ? true : false;
-    var login = res[0]._login > 0 ? true : false;
-
-    if (exist) {
-        if (login) {
-            startSession();
-        } else {
-            _result.send("LOCK");
-        }
-    } else {
-        register();
-    }
+    if (res[0])
+        startSession(res[0]._idUser);
+    else
+        _result.send("LOCK");
 }
 
 
-var register = function() {
-    var query =
-        "INSERT INTO User(name,mail,password) VALUES ('#1','','#2')";
-    query = query.replace("#1", _user);
-    query = query.replace("#2", _pass);
-    sqlAdm.getQuery(query, startSession);
-}
-
-
-var startSession = function() {
-    var query =
-        "SELECT id_user, name FROM User WHERE name = '#1'";
-    query = query.replace("#1", _user);
-    sqlAdm.getQuery(query, onStartSession);
-}
-
-var onStartSession = function(res) {
+var startSession = function(idUser) {
     var latitude = _request.body.latitude;
     var longitude = _request.body.longitude;
     sess = _request.session;
     sess.userLatitude = latitude;
     sess.userLongitude = longitude;
-    sess.userId = res[0].id_user;
-    sess.userName = res[0].name;
+    sess.userId = idUser;
+    sess.userName = idUser;
     _result.send("LOGIN");
 }
 
@@ -71,9 +46,9 @@ var handleRequest = function(req, res) {
     _request = req;
     _user = sanitizer.sanitize(_request.body.user);
     _pass = sanitizer.sanitize(_request.body.pass);
-    if (_user && _pass){
+    if (_user && _pass) {
         login();
-    }else{
+    } else {
         _result.send("");
     }
 };

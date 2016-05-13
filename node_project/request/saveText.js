@@ -1,48 +1,77 @@
-var sqlAdm = require("./../sql/SqlAdm.js");
+var neo4j = require("./../neo4j/Neo4JAdm.js");
 var sanitizer = require('sanitizer');
-var sqlAdm = require("./../sql/SqlAdm.js")
 
 
 var _result;
 var _request;
 
-
-var savePlace = function(latitude, longitude, onFinish) {
+var getPlaceId = function(latitude, longitude, onFinish) {
 
     var query =
-        " INSERT into Place (name, latitude, longitude, radio) " +
-        "   SELECT  CONCAT('place',ROUND(100.0 + 400.0 * RAND())), " +
-        "   #1,#2,50 " +
-        "      FROM Place P " +
-        "   WHERE " +
-        "      (SELECT COUNT(P_in.id_place) FROM Place P_in " +
-        " 	         WHERE SQRT(POW(P_in.latitude  - #3,2) + " +
-        "                       POW(P_in.longitude - #4,2)) " +
-        "                   < P_in.radio * 0.00001 ) = 0 " +
-        "  LIMIT 1";
+        "MATCH (p:Place) " +
+        "WHERE sqrt((abs(p.latitude-#1))^2 + (abs(p.longitude-#2))^2) < p.radio * .00001 " +
+        "RETURN p.id_place";
 
     query = query.replace("#1", latitude);
     query = query.replace("#2", longitude);
-    query = query.replace("#3", latitude);
-    query = query.replace("#4", longitude);
-    sqlAdm.getQuery(query, onFinish);
+
+    neo4j.getQuery(query, onFinish);
+}
+
+var savePlace = function(latitude, longitude, onFinish) {
+
+    getPlaceId(latitude, longitude,
+        function(res) {
+            if (!res[0]) {
+                var query =
+                    "MATCH (p:Place) " +
+                    "WITH CASE WHEN COUNT(p.id_place) = 0 THEN 1 ELSE MAX(p.id_place) + 1 END AS id_place " +
+                    "CREATE (p:Place { id_place: id_place, name : '#1', latitude : #2, longitude : #3, radio : 50})";
+
+                query = query.replace("#1", "place");
+                query = query.replace("#2", latitude);
+                query = query.replace("#3", longitude);
+
+                neo4j.getQuery(query, onFinish);
+            }
+            onFinish(null);
+
+        }
+    )
 }
 
 
 var saveText = function(content, userId, latitude, longitude, onFinish) {
+
     var query =
-        "INSERT INTO Post (date, content, id_user, id_place) VALUES (" +
-        "   NOW(), '#1', #2 ," +
-        "   (SELECT id_place FROM Place " +
-        "       WHERE SQRT(POW(latitude - #3,2) + POW(longitude - #4,2)) " +
-        "               < radio * 0.00001 LIMIT 1))";
+        "MATCH (p:Post) " +
+        "WITH CASE WHEN COUNT(p.id_post) = 0 THEN 1 ELSE MAX(p.id_post) + 1 END AS id_post " +
+        "CREATE (p:Post { id_post: id_post, date : timestamp(), content : '#1'}) " +
+        "RETURN id_post";
 
     query = query.replace("#1", content);
-    query = query.replace("#2", userId);
-    query = query.replace("#3", latitude);
-    query = query.replace("#4", longitude);
+    console.log(query);
 
-    sqlAdm.getQuery(query, onFinish);
+
+    neo4j.getQuery(query, function(res) {
+
+        var query2 =
+            "MATCH (po:Post),(pl:Place),(u:User) " +
+            "WHERE po.id_post = #1 AND  sqrt((abs(pl.latitude-#2))^2 + (abs(pl.longitude-#3))^2) < pl.radio * .00001 AND u.id_user = '#4' " +
+            "CREATE UNIQUE (po)-[rpl:ESTA_EN]->(pl) " +
+            "CREATE UNIQUE (po)-[ru:ES_DE]->(u) " +
+            "RETURN po.id_post AS id_post";
+
+        var idPost = res[0].id_post;
+
+        query2 = query2.replace("#1", idPost);
+        query2 = query2.replace("#2", latitude);
+        query2 = query2.replace("#3", longitude);
+        query2 = query2.replace("#4", userId);
+        console.log(query2);
+
+        neo4j.getQuery(query2, onFinish);
+    });
 }
 
 var onSaveText = function(res) {

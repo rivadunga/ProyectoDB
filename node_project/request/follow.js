@@ -1,5 +1,5 @@
 var sanitizer = require('sanitizer');
-var sqlAdm = require("./../sql/SqlAdm.js")
+var neo4j = require("./../neo4j/Neo4JAdm.js");
 
 var _result;
 var _request;
@@ -9,16 +9,21 @@ var _idUser;
 
 var follow = function() {
     var query =
-        "SELECT COUNT(id_friends) AS _exists FROM Friends WHERE " +
-        "   id_user_a = #1 AND id_user_b = #2";
-    query = query.replace("#1", _idFollow);
-    query = query.replace("#2", _idUser);
+        "MATCH (u:User),(u2:User),(p:Post) " +
+        "WHERE u.id_user = '#1' AND (p)-[:ES_DE]->(u2) AND u2.id_user = '#2' " +
+        "RETURN u.id_user, " +
+        "CASE WHEN EXISTS((u)-[:FOLLOW]->(u2)) THEN 1 ELSE 0 END as _iFollow ";
 
-    sqlAdm.getQuery(query, onLikeVer);
+    query = query.replace("#1", _idUser);
+    query = query.replace("#2", _idFollow);
+
+    neo4j.getQuery(query, onLikeVer);
 }
 
 var onLikeVer = function (res){
-    if (res[0]._exists == 0)
+    console.log(res);
+
+    if (res[0]._iFollow == 0)
         addFollow();
     else
         removeFollow();
@@ -26,20 +31,28 @@ var onLikeVer = function (res){
 
 var addFollow = function() {
     var query =
-        "INSERT INTO Friends(id_user_a, id_user_b)  VALUE(#1,#2) ";
-    query = query.replace("#1", _idFollow);
-    query = query.replace("#2", _idUser);
-    sqlAdm.getQuery(query, function() {
+        "MATCH (u1:User),(u2:User) " +
+        "WHERE u1.id_user = '#1' AND u2.id_user = '#2' " +
+        "CREATE (u1)-[r:FOLLOW]->(u2)";
+
+    query = query.replace("#1", _idUser);
+    query = query.replace("#2", _idFollow);
+
+    neo4j.getQuery(query, function() {
         _result.send("DONE");
     });
 }
 
 var removeFollow = function() {
     var query =
-        "DELETE FROM Friends WHERE id_user_a = #1 AND id_user_b = #2 ";
-    query = query.replace("#1", _idFollow);
-    query = query.replace("#2", _idUser);
-    sqlAdm.getQuery(query, function() {
+        "MATCH (u1:User)-[r:FOLLOW]->(u2:User) " +
+        "WHERE u1.id_user = '#1' AND u2.id_user = '#2' " +
+        "Delete r";
+
+    query = query.replace("#1", _idUser);
+    query = query.replace("#2", _idFollow);
+
+    neo4j.getQuery(query, function() {
         _result.send("DONE");
     });
 }
@@ -52,6 +65,7 @@ var handleRequest = function(req, res) {
 
     _idFollow = req.body.idUser;
     _idUser = sess.userId;
+
     if (_idFollow && _idUser){
         follow();
     }else{

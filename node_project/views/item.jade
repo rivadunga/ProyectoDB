@@ -1,15 +1,17 @@
 
-- for (var i =  0; i < res.length; ++i) {
-- var idPost = res[i].id_post;
-- var date = res[i].date;
-- var content = res[i].content;
-- var user = res[i]._user;
-- var idUser = res[i].id_user
-- var place = res[i]._place;
-- var file = res[i]._file;
-- var likes = res[i]._likes;
-- var iLike = res[i]._iLike;
-- var iFollow = res[i]._iFollow;
+- for (var i =  0; i < dataPost.length; ++i) {
+- var idPost = dataPost[i].id_post;
+- var date = dataPost[i].date;
+- var content = dataPost[i].content;
+- var user = dataPost[i].user;
+- var idUser = dataPost[i].id_user
+- var place = dataPost[i]._place;
+- var fileName = dataFiles[i]._nameFile;
+- var fileFormat = dataFiles[i]._format;
+- var fileUrl = dataFiles[i]._url;
+- var likes = dataPost[i]._likes;
+- var iLike = dataILike[i]._iLike;
+- var iFollow = dataIFollow[i]._iFollow;
 
 
 style.
@@ -33,16 +35,16 @@ style.
 			-}else{
 			span.card-title yo
 			-}    
-			- if (file){
+			- if (fileName){
 			.card-image
-				img(src="/user-content/" + file, alt='Mountain View')
+				img(src="/user-content/" + fileName, alt='Mountain View')
 			-}else{
 				p(style='color: #808080 !important; font-style: italic; font-size:x-large !important')
 					| #{content}
 			-};
 		.card-action(style="padding-bottom: 40px")  
 			a.col
-				- if (iLike > 0){
+				- if (iLike == 0){
 				.right.like(style="padding-left: 10px")      
 					| #{likes}
 				- } else {
@@ -56,7 +58,7 @@ style.
 				i.material-icons.left location_on
 				| #{place}
 			- if (idUser != idUs){
-			a.center.col.s3(onClick='follow(#{idUser})')
+			a.center.col.s3(onClick='follow("#{idUser}")')
 				- if (iFollow == 0){
 				span.right.follow(style="padding-right: 10px")    
 					| Follow

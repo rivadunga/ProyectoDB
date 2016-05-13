@@ -1,7 +1,6 @@
 var multer = require('multer');
 var sanitizer = require('sanitizer');
-
-var sqlAdm = require("./../sql/SqlAdm.js");
+var neo4j = require("./../neo4j/Neo4JAdm.js");
 var saveText = require('./saveText');
 
 var _request;
@@ -9,31 +8,27 @@ var _result;
 
 var _fileName;
 var _encode;
+var _idPost;
 
-
-var savePostImage = function()
-{
-    var query2 = "INSERT INTO PostFile(id_post, id_file) VALUES(" +
-        "(SELECT MAX(id_post) FROM Post)," +
-        "(SELECT id_file FROM File WHERE name = '#1'))";
-
-    query2 = query2.replace("#1", _fileName);
-    sqlAdm.getQuery(query2, onSaveImage);
-
-}
 
 var saveImage = function() {
 
     var query1 =
-        "INSERT INTO File(name, format, url) VALUES (" +
-        "   '#1','#2','/user-content/#3')";
+        "MATCH (p:Post) " +
+        "WHERE p.id_post = #4 " +
+        "CREATE (f:File { name : '#1', format : '#2', url : '/user-content/#3'}) " +
+        "CREATE (p)-[:TIENE]->(f)";
 
     query1 = query1.replace("#1", _fileName);
     query1 = query1.replace("#2", _encode);
     query1 = query1.replace("#3", _fileName);
+    query1 = query1.replace("#4",_idPost);
 
-    sqlAdm.getQuery(query1, function(res) {
-        savePostImage();
+    console.log("SAVE IMAGE");
+    console.log(query1);
+
+    neo4j.getQuery(query1, function(res) {
+        onSaveImage();
     });
 }
 
@@ -61,12 +56,13 @@ var onUploadImage = function() {
     var latitude = sess.userLatitude;
     var longitude = sess.userLongitude;
     var userId = sess.userId;
-    var content = sanitizer.sanitize(_request.body.content);
+    var content = 1;
 
     if (latitude && longitude && userId && content) {
         saveText.savePlace(latitude, longitude, function(res) {
             saveText.saveText("", userId, latitude, longitude,
                 function(res) {
+                    _idPost = res[0].id_post;
                     saveImage();
                 });
         });
