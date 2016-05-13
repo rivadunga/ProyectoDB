@@ -3,7 +3,7 @@ $(document).ready(function() {
       $('.modal-trigger').leanModal();
     setInterval(function() {
         refreshContent();
-    }, 7000);
+    }, 4000);
     uploadPhoto();
     $('#loading').fadeOut();
 });

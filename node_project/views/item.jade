@@ -6,9 +6,13 @@
 - var user = dataPost[i].user;
 - var idUser = dataPost[i].id_user
 - var place = dataPost[i]._place;
+- if (dataFiles[i]){
 - var fileName = dataFiles[i]._nameFile;
 - var fileFormat = dataFiles[i]._format;
 - var fileUrl = dataFiles[i]._url;
+-}else{
+- var fileName = null;
+-}
 - var likes = dataPost[i]._likes;
 - var iLike = dataILike[i]._iLike;
 - var iFollow = dataIFollow[i]._iFollow;
@@ -26,7 +30,7 @@ style.
 		}
 	}
 
-.item(id="content"+idPost style="margin: auto !important;")
+.item(id="content"+idPost style="width: 100%  !important;")
 	input.idPost(type="hidden" value=idPost)
 	.card.white.darken-4
 		.card-content.black-text

@@ -5,7 +5,7 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='msapplication-tap-highlight', content='no')
-    title Login
+    title Registro
     link(rel='icon', href='images/favicon/favicon-32x32.png', sizes='32x32')
     link(rel='apple-touch-icon-precomposed', href='images/favicon/apple-touch-icon-152x152.png')
     meta(name='msapplication-TileColor', content='#00bcd4')
@@ -30,7 +30,7 @@ html
   #login-page.row
     .col.s12.m2.l4.z-depth-4.card-panel
     .col.s12.m8.l4.z-depth-4.card-panel(style='margin-top: 50px;')
-      form.login-form
+      form.signup-form
         .row
           .input-field.col.s12.center
             p.center.login-form-text
@@ -38,29 +38,33 @@ html
               span(style='padding-left: 5px; padding-right: 8px; font-size: 30px; color: #F57C00') mySpot
         .row
           center
-            h5 Inicia Sesión
+            h5 Registro
+        .row
+          .input-field.col.s12
+            input#username.validate(type='text')
+            label(for='text') Usuario
         .row
           .input-field.col.s12
             input#email.validate(type='text')
-            label(for='text') Usuario
+            label(for='email') Email
         .row
           .input-field.col.s12
             input#password.validate(type='password')
             label(for='password') Contraseña
         .row
           .input-field.col.s12
-            a.btn.waves-effect.waves-light.grey.col.s12(onclick='login()') Login
+            a.btn.waves-effect.waves-light.grey.darken-1.col.s12(onclick='signup()') Registrate
         .row
           .input-field.col.s12
-            a.btn.waves-effect.waves-light.grey.darken-1.col.s12(href='/signup') Registro
+            a.btn.waves-effect.waves-light.grey.col.s12(href='/login') Iniciar Sesión
     .col.s12.m2.l4.z-depth-4.card-panel
   .row
     .col.s12.m2.l4.z-depth-4.card-panel
     .col.s12.m8.l4.card.grey.lighten-1.z-depth-4(style='margin-top: 15px;')
       .card-content
         p
-          | Al iniciar sesión, mySpot te pedirá permiso para conocer tu ubicación. mySpot funciona con la ubicación de los usuarios y necesita tu ubicación para filtrar los spots y mostrarte los que estan cerca de ti.
+          | Al registrarte, mySpot te pedirá permiso para conocer tu ubicación. mySpot funciona con la ubicación de los usuarios y necesita tu ubicación para filtrar los spots y mostrarte los que estan cerca de ti.
     .col.s12.m2.l4.z-depth-4.card-panel
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
   script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js')
-  script(type='text/javascript', src='js/login.js')
+  script(type='text/javascript', src='js/signup.js')

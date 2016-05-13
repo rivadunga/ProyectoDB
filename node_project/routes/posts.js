@@ -5,6 +5,7 @@ var getPost = require(".././request/getPosts.js");
 var saveText = require(".././request/saveText.js");
 var saveImage = require(".././request/saveImage.js");
 var login = require(".././request/login.js");
+var signup = require(".././request/signup.js");
 var like = require(".././request/like.js");
 var follow = require(".././request/follow.js");
 var getPostsInfo = require(".././request/getPostsInfo.js");
@@ -30,6 +31,10 @@ router.post('/login', function(req, res) {
 
 router.post('/like', function(req, res) {
     like.handleRequest(req,res);
+});
+
+router.post('/signup', function(req, res) {
+    signup.handleRequest(req, res);
 });
 
 router.post('/follow', function(req, res) {

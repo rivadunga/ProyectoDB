@@ -80,7 +80,6 @@ var loadPostIFollow = function() {
         "CASE WHEN EXISTS((u)-[:FOLLOW]->(u2)) THEN 1 ELSE 0 END as _iFollow " +
         "ORDER BY p.id_post DESC";
 
-
     query = query.replace("#1", _idUser);
     query = query.replace("#2", lastIndex);
     neo4j.getQuery(query, function(res) {
