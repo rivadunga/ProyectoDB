@@ -5,177 +5,156 @@
 
 doctype html
 html
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js')
-    link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css', type='text/css', rel='stylesheet', media='screen,projection')
-    link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
-    link(rel='stylesheet', type='text/css', href='/js/picedit.min.css')
-    script(type='text/javascript', src='/js/picedit.min.js')
-    title mySpot
-    script(type='text/javascript').
-      //<![CDATA[
-      $(window).load(function(){
-      $(document).ready(function() {
-      var text_max = 200;
-      $('#textarea_feedback').html(text_max + ' caracteres disponibles.');
-      $('#TP_text').keyup(function() {
-      var text_length = $('#TP_text').val().length;
-      var text_remaining = text_max - text_length;
-      $('#textarea_feedback').html(text_remaining + ' caracteres disponibles.');
-      });
-      });
-      });//]]>
-    script(type='text/javascript').
-      //<![CDATA[
-      $(window).load(function(){
-      function readURL(input) {
-      if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-      $('#prev').attr('src', e.target.result);
-      }
-      reader.readAsDataURL(input.files[0]);
-      }
-      }
-      $("#image").change(function(){
-      readURL(this);
-      });
-      });//]]>
-  body(style='background-color: #eee !important')
-    .navbar-fixed
-      nav
-        .nav-wrapper.deep-purple.lighten-1
-          a(href='#', style='padding-left: 30px; font-size: large !important; color: #a0ffffff !important;')
-            a.light(href='#', style='font-size: x-large !important;') #{userName} Spot
-          ul.right
-            li
-              a.modal-trigger.waves-effect.waves-light(href='#modalNotificaciones', onclick='getNotifications()')
-                i.material-icons add_alert  
-            li
-              a.modal-trigger.waves-effect.waves-light(href='#modalAmigos', onclick='getFriends()')
-                i.material-icons person_pin
-            li
-              a.waves-effect.waves-light(href='/logout')
-                i.material-icons input
-    .row
-      .col.s12.m1.l2
-        p
-      .col.s12.m4.l3(style='padding-top: 20px; padding-bottom: 100px;')
-        .row
-          .card.grey.lighten-2
-            .card-image
-              img(src='http://materializecss.com/images/sample-1.jpg')
-              span.card-title #{userName}
-            .card-action
-              a(href='#') #{posts} Posts
-              a(href='#') #{likes} Likes
-            .card-action
-              a(href='#') #{followers} Followers
-              a(href='#') #{following} Following
-        .row
-          .card.white
-            .card-content
-              span.card-title Trending Topics
-              p
-                - for (var i = 0; i < threndingTopics.length && i < 10; i++){
-                - var tt = threndingTopics[i];
-                | #{tt}
-                br    
-                -}
-      .col.s12.m6.l5(style='padding-top: 20px; padding-bottom: 100px;')
-        #loading.progress.deep-purple
-          .indeterminate.grey
-        #mainContainer
-      .col.s12.m1.l2
-        p
-    footer(style='position:fixed; bottom: 0px; width:100%;')
-      .fixed-action-btn.horizontal.click-to-toggle(style='bottom: 45px; right: 24px;')
-        a.btn-floating.btn-large.deep-purple.lighten-1
-          i.material-icons playlist_add
-        ul
-          li
-            a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalPhoto')
-              i.material-icons perm_media
-          li
-            a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalPost')
-              i.material-icons comment
-          li
-            a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalMap', onclick='getMap()')
-              i.material-icons location_on
-          li
-            a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalYoutube')
-              i.material-icons video_library
-      //
-        <nav>
-        <div class="nav-wrapper">
-        <div class="row"><a href="#modalPost" style="height:100%" class="indigo center col s4 modal-trigger waves-effect waves-light"><i class="material-icons">comment</i></a><a>
-        <div class="red center col s4 waves-effect waves-light"><i class="mdi-image-photo"></i>
-        <form id="IP_form" method="post" enctype="multipart/form-data" action="/saveImage" style="position: absolute; top:0px; width: 100%; height: 100%;">
-        <input type="file" name="image" accept="image/*" style="opacity: 0; width: 100%; height: 100%;"/>
-        </form>
-        </div></a><a href="#modalMap" onClick="getMap()" class="modal-trigger">
-        <div style="height:100%" class="orange center col s4 waves-effect waves-light"><i class="material-icons">location_on        </i></div></a></div>
-        </div>
-        </nav>
-    #modalPost.modal
-      .modal-content
-        h4 Nuevo Post de Texto
-        .row
-          form.col.s12
-            .row
-              .input-field.col.s12
-                textarea#TP_text.materialize-textarea.validate(maxlength='200')
-                label(for='textarea1') Mensaje
-            .row
-              #textarea_feedback
-      .modal-footer
-        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(onclick='uploadText()') Post            
-        a.modal-action.modal-close.waves-effect.waves-green.btn-flat Cancel  
-    #modalPhoto.modal
-      form#IP_form.col.s12(method='post', enctype='multipart/form-data', action='/saveImage')
-        .modal-content
-          h4 Nueva Imagen
-          .row
-            .input-field.col.s12
-              input(type='text', name='caption', value='')
-              label(for='textarea1') Mensaje
-          .row
-            .file-field.input-field
-              .btn
-                span Imagen
-                input#image(type='file', name='image', accept='image/*')
-              .file-path-wrapper
-                input.file-path.validate(type='text')
-          .row
-            center
-              img#prev(src='http://1x1px.me/FFFFFF-0.0.png', alt='Imagen a subir.', height='150px')
-        .modal-footer
-          input.modal-action.modal-close.waves-effect.waves-green.btn-flat(type='submit', value='Enviar')
-          a.modal-action.modal-close.waves-effect.waves-green.btn-flat Cancelar  
-    #modalYoutube.modal
-      .modal-content
-        h4 Video de Youtube
-        .row
-          form.col.s12
-            .row
-              .input-field.col.s12
-                input#TP_text.validate(type='text', maxlength='200')
-                label(for='textarea1') URL de Youtube
-      .modal-footer
-        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(onclick='uploadText()') Post            
-        a.modal-action.modal-close.waves-effect.waves-green.btn-flat Cancel  
-    #modalAmigos.modal.bottom-sheet
-      #friendsContainer.modal-content
-    #modalNotificaciones.modal.bottom-sheet
-      #notificationsContainer.modal-content
-    #modalMap.modal.modal-fixed-footer
-      #mapContainer.modal-content
-  script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js')
-  script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js')
-  script(type='text/javascript', src='js/jquery.form.js')
-  script(type='text/javascript', src='js/profileContent.js')
-  script(type='text/javascript', src='js/profileItem.js')
-  script(src='https://maps.googleapis.com/maps/api/js')
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js')
+		link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css', type='text/css', rel='stylesheet', media='screen,projection')
+		link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
+		title mySpot
+		script(type='text/javascript').
+			//<![CDATA[
+			$(window).load(function(){
+			$(document).ready(function() {
+			var text_max = 200;
+			$('#textarea_feedback').html(text_max + ' caracteres disponibles.');
+			$('#TP_text').keyup(function() {
+			var text_length = $('#TP_text').val().length;
+			var text_remaining = text_max - text_length;
+			$('#textarea_feedback').html(text_remaining + ' caracteres disponibles.');
+			});
+			});
+			});//]]>
+		script(type='text/javascript').
+			//<![CDATA[
+			$(window).load(function(){
+			function readURL(input) {
+			if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+			$('#prev').attr('src', e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+			}
+			}
+			$("#image").change(function(){
+			readURL(this);
+			});
+			});//]]>
+	body(style='background-color: #eee !important')
+		.navbar-fixed
+			nav
+				.nav-wrapper.deep-purple.lighten-1
+					a(href='#', style='padding-left: 30px; font-size: large !important; color: #a0ffffff !important;')
+						a.light(href='#', style='font-size: x-large !important;') #{userName} Spot
+					ul.right
+						li
+							a.modal-trigger.waves-effect.waves-light(href='#modalNotificaciones', onclick='getNotifications()')
+								i.material-icons add_alert  
+						li
+							a.modal-trigger.waves-effect.waves-light(href='#modalAmigos', onclick='getFriends()')
+								i.material-icons person_pin
+						li
+							a.waves-effect.waves-light(href='/logout')
+								i.material-icons input
+		.row
+			.col.s12.m1.l2
+				p
+			.col.s12.m4.l3(style='padding-top: 20px; padding-bottom: 100px;')
+				.row
+					.card.grey.lighten-3
+						.card-image
+							img(src='http://materializecss.com/images/sample-1.jpg')
+							span.card-title #{userName}
+						.card-action
+							a(href='#') #{posts} Posts
+							a(href='#') #{likes} Likes
+						.card-action
+							a(href='#') #{followers} Followers
+							a(href='#') #{following} Following
+				.row
+					.card.white
+						.card-content
+							span.card-title Trending Topics
+							p
+								- for (var i = 0; i < threndingTopics.length && i < 10; i++){
+								- var tt = threndingTopics[i];
+								| #{tt}
+								br    
+								-}
+			.col.s12.m6.l5(style='padding-top: 20px; padding-bottom: 100px;')
+				#loading.progress.deep-purple
+					.indeterminate.grey
+				#mainContainer
+			.col.s12.m1.l2
+				p
+		footer(style='position:fixed; bottom: 0px; width:100%;')
+			.fixed-action-btn.horizontal.click-to-toggle(style='bottom: 45px; right: 24px;')
+				a.btn-floating.btn-large.deep-purple.lighten-1
+					i.material-icons playlist_add
+				ul
+					li
+						a.btn-floating.deep-purple.lighten-2
+							form#IP_form.col.s12(method='post', enctype='multipart/form-data', action='/saveImage' style='position:absolute;')
+								input#image(type='file', name='image', accept='image/*', style='opacity: 0; width: 100%; height: 100%;')
+							i.material-icons perm_media
+					li
+						a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalPost')
+							i.material-icons comment
+					li
+						a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalMap', onclick='getMap()')
+							i.material-icons location_on
+					li
+						a.btn-floating.deep-purple.lighten-2.modal-trigger(href='#modalYoutube')
+							i.material-icons video_library
+			//
+				<nav>
+				<div class="nav-wrapper">
+				<div class="row"><a href="#modalPost" style="height:100%" class="indigo center col s4 modal-trigger waves-effect waves-light"><i class="material-icons">comment</i></a><a>
+				<div class="red center col s4 waves-effect waves-light"><i class="mdi-image-photo"></i>
+				<form id="IP_form" method="post" enctype="multipart/form-data" action="/saveImage" style="position: absolute; top:0px; width: 100%; height: 100%;">
+				<input type="file" name="image" accept="image/*" style="opacity: 0; width: 100%; height: 100%;"/>
+				</form>
+				</div></a><a href="#modalMap" onClick="getMap()" class="modal-trigger">
+				<div style="height:100%" class="orange center col s4 waves-effect waves-light"><i class="material-icons">location_on        </i></div></a></div>
+				</div>
+				</nav>
+		#modalPost.modal
+			.modal-content
+				h4 Nuevo Post de Texto
+				.row
+					form.col.s12
+						.row
+							.input-field.col.s12
+								textarea#TP_text.materialize-textarea.validate(maxlength='200')
+								label(for='textarea1') Mensaje
+						.row
+							#textarea_feedback
+			.modal-footer
+				a.modal-action.modal-close.waves-effect.waves-green.btn-flat(onclick='uploadText()') Post            
+				a.modal-action.modal-close.waves-effect.waves-green.btn-flat Cancel  
+		#modalYoutube.modal
+			.modal-content
+				h4 Video de Youtube
+				.row
+					form.col.s12
+						.row
+							.input-field.col.s12
+								input#TP_video.validate(type='text', maxlength='200')
+								label(for='textarea1') URL de Youtube
+			.modal-footer
+				a.modal-action.modal-close.waves-effect.waves-green.btn-flat(onclick='uploadVideo()') Post            
+				a.modal-action.modal-close.waves-effect.waves-green.btn-flat Cancel  
+		#modalAmigos.modal.bottom-sheet
+			#friendsContainer.modal-content
+		#modalNotificaciones.modal.bottom-sheet
+			#notificationsContainer.modal-content
+		#modalMap.modal.modal-fixed-footer
+			#mapContainer.modal-content
+	script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js')
+	script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js')
+	script(type='text/javascript', src='js/jquery.form.js')
+	script(type='text/javascript', src='js/profileContent.js')
+	script(type='text/javascript', src='js/profileItem.js')
+	script(src='https://maps.googleapis.com/maps/api/js')

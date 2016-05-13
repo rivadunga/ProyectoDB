@@ -6,12 +6,13 @@
 - var user = dataPost[i].user;
 - var idUser = dataPost[i].id_user
 - var place = dataPost[i]._place;
-- if (dataFiles[i]){
-- var fileName = dataFiles[i]._nameFile;
-- var fileFormat = dataFiles[i]._format;
-- var fileUrl = dataFiles[i]._url;
--}else{
 - var fileName = null;
+- for (var j = 0; j < dataFiles.length; j++){
+	- if (idPost == dataFiles[j].id_post && dataFiles[j]._nameFile){
+		- var fileName = dataFiles[j]._nameFile;
+		- var fileFormat = dataFiles[j]._format;
+		- var fileUrl = dataFiles[j]._url;
+	-}	
 -}
 - var likes = dataPost[i]._likes;
 - var iLike = dataILike[i]._iLike;
@@ -40,8 +41,13 @@ style.
 			span.card-title yo
 			-}    
 			- if (fileName){
-			.card-image
-				img(src="/user-content/" + fileName, alt='Mountain View')
+				- if (fileFormat != "video"){
+				.card-image
+					img(src="/user-content/" + fileName, alt='Mountain View')
+				-}else{
+				.card-image
+					iframe(src="http://www.youtube.com/embed/" + fileName, style="width: 100%; height: 300px;")
+				-}
 			-}else{
 				p(style='color: #808080 !important; font-style: italic; font-size:x-large !important')
 					| #{content}

@@ -40,6 +40,39 @@ function sendText(content) {
 }
 
 
+
+
+function uploadVideo() {
+    var text = $('#TP_video').val();
+    if (text){
+        sendVideo(youtube_parser(text));
+    }
+}
+
+function youtube_parser(url){
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+}
+
+function sendVideo(content) {
+    $('#loading').fadeIn();
+    $.ajax({
+        type: "POST",
+        url: "/saveVideo",
+        data: {
+            content: content
+        },
+        success: function(data) {
+            $('#loading').fadeOut();
+        }
+    });
+}
+
+
+
+
+
 function refreshContent() {
 
     var lastIndex = 0;

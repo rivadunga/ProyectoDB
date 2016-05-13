@@ -33,9 +33,9 @@ var savePlace = function(latitude, longitude, onFinish) {
                 query = query.replace("#3", longitude);
 
                 neo4j.getQuery(query, onFinish);
+            } else {
+                onFinish(null);
             }
-            onFinish(null);
-
         }
     )
 }

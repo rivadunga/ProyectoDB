@@ -4,6 +4,7 @@ var router = express.Router();
 var getPost = require(".././request/getPosts.js");
 var saveText = require(".././request/saveText.js");
 var saveImage = require(".././request/saveImage.js");
+var saveVideo = require(".././request/saveVideo.js");
 var login = require(".././request/login.js");
 var signup = require(".././request/signup.js");
 var like = require(".././request/like.js");
@@ -23,6 +24,11 @@ router.post('/saveText', function(req, res) {
 
 router.post('/saveImage', function(req, res) {
     saveImage.handleRequest(req, res);
+});
+
+
+router.post('/saveVideo', function(req, res) {
+    saveVideo.handleRequest(req, res);
 });
 
 router.post('/login', function(req, res) {

@@ -17,7 +17,7 @@ var loadPostData = function() {
         "MATCH (p)-[:ES_DE]->(u:User),(p)-[:ESTA_EN]->(pl:Place) " +
         "WHERE p.id_post > #1 " +
         "OPTIONAL MATCH (u2:User)-[l:LIKE]->(p:Post),(f:File) " +
-        "return p.id_post as id_post, p.date as date,p.content as content, u.id_user as user, u.id_user as id_user, " +
+        "return p.id_post AS id_post, p.date as date,p.content as content, u.id_user as user, u.id_user as id_user, " +
         "COUNT(DISTINCT l) as _likes, " +
         "collect(distinct pl.name) as _place " +
         "ORDER BY p.id_post DESC";
@@ -36,7 +36,7 @@ var loadPostFiles = function() {
     var query =
         "MATCH (p:Post),(f:File) " +
         "WHERE p.id_post > #1 " +
-        "return p.id_post, p.content, " +
+        "return p.id_post AS id_post, p.content, " +
         "CASE WHEN EXISTS((p)-[:TIENE]->(f)) THEN f.name ELSE NULL END AS _nameFile, " +
         "CASE WHEN EXISTS((p)-[:TIENE]->(f)) THEN f.format ELSE NULL END AS _format, " +
         "CASE WHEN EXISTS((p)-[:TIENE]->(f)) THEN f.url ELSE NULL END AS _url " +
@@ -92,7 +92,10 @@ var loadPostIFollow = function() {
 
 var onFinish = function() {
 
-    if (_dataPost && _dataPost.length > 0)
+    if (_dataPost && _dataPost.length > 0) {
+        console.log(_dataPost);
+        console.log(_dataFiles);
+
         _result.render('item', {
             dataPost: _dataPost,
             dataILike: _dataILike,
@@ -100,8 +103,9 @@ var onFinish = function() {
             dataFiles: _dataFiles,
             idUs: _idUser
         });
-    else
+    } else {
         _result.send("");
+    }
 }
 
 var handleRequest = function(req, res) {
